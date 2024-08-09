@@ -98,3 +98,17 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         services = OrganizationService.objects.filter(organization=organization)
         serializer = OrganizationServiceSerializer(services, many=True)
         return Response(serializer.data)
+    
+
+
+
+
+# class OrganizationReviewViewSet(viewsets.ModelViewSet):
+#     queryset = OrganizationReview.objects.all()
+#     serializer_class = OrganizationReviewSerializer
+
+
+
+# class ProfileReviewViewSet(viewsets.ModelViewSet):
+#     queryset = ProfileReview.objects.all()
+#     serializer_class = ProfileReviewSerializer

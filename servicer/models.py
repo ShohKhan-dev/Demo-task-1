@@ -37,6 +37,7 @@ class Category(MPTTModel):
     def save(self, *args, **kwargs):
 
         if self.order_number is None:
+            siblings = Category.objects.filter(parent=self.parent).order_by('order_number')
             self.order_number = siblings.count() + 1
         else:
             existing_category = Category.objects.filter(parent=self.parent, order_number=self.order_number).exclude(pk=self.pk).first()
@@ -206,31 +207,31 @@ class PortfolioImage(models.Model):
 
 
 
-# class Review(models.Model):
+# class BaseReview(models.Model):
 #     comment = models.TextField()
 #     rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-#     organization = models.ForeignKey(Organization, related_name='organization_reviews', on_delete=models.CASCADE, null=True, blank=True)
-#     profile = models.ForeignKey(Profile, related_name='profile_reviews', on_delete=models.CASCADE, null=True, blank=True)
 
 #     created_at = models.DateTimeField(auto_now_add=True)
 
+#     class Meta:
+#         abstract = True
+
+
+# class OrganizationReview(BaseReview):
+#     organization = models.ForeignKey(Organization, related_name='organization_reviews', on_delete=models.CASCADE)
+
 #     def __str__(self):
-#         return f"Review for {self.organization or self.profile}"
+#         return f"Review for {self.organization.name_en}"
 
-#     def clean(self):
-#         if not self.organization and not self.profile:
-#             raise ValidationError("A review must be associated with either an organization or a profile.")
-#         if self.organization and self.profile:
-#             raise ValidationError("A review cannot be associated with both an organization and a profile.")
+# class ProfileReview(BaseReview):
+#     profile = models.ForeignKey(Profile, related_name='profile_reviews', on_delete=models.CASCADE)
 
-#     def save(self, *args, **kwargs):
-#         self.clean()
-#         super().save(*args, **kwargs)
-
+#     def __str__(self):
+#         return f"Review for {self.profile.first_name} {self.profile.last_name}"
 
 
 # class ReviewImage(models.Model):
-#     review = models.ForeignKey(Review, related_name='review_images', on_delete=models.CASCADE)
+#     review = models.ForeignKey(BaseReview, related_name='review_images', on_delete=models.CASCADE)
 #     image = models.ImageField(upload_to=PathAndRename('review_images/'), blank=True, null=True)
 
 #     class Meta:

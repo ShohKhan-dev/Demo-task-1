@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from servicer.models import Category, Service, Profile, ProfileService, Organization, OrganizationService, PortfolioImage
+from servicer.models import Category, Service, Profile, ProfileService, Organization, OrganizationService, PortfolioImage, OrganizationReview, ProfileReview, ReviewImage
 
 class CategorySerializer(serializers.ModelSerializer):
     category_children = serializers.SerializerMethodField()
@@ -52,3 +52,26 @@ class OrganizationSerializer(serializers.ModelSerializer):
             'description_uz', 'description_ru', 'description_en', 'city', 'street', 'house_number',
             'landmark', 'latitude', 'longitude'
         ]
+
+
+# class ReviewImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ReviewImage
+#         fields = ['id', 'image']
+
+# class OrganizationReviewSerializer(serializers.ModelSerializer):
+#     # review_images = ReviewImageSerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = OrganizationReview
+#         fields = ['id', 'organization', 'comment', 'rating', 'created_at']
+
+
+# class ProfileReviewSerializer(serializers.ModelSerializer):
+#     # review_images = ReviewImageSerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = ProfileReview
+#         fields = ['id', 'profile', 'comment', 'rating', 'created_at']
+
+

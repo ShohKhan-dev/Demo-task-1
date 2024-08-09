@@ -20,6 +20,9 @@ router.register(r'organization-services', OrganizationServiceViewSet)
 router.register(r'portfolio-images', PortfolioImageViewSet)
 router.register(r'organizations', OrganizationViewSet)
 
+# router.register(r'organization-reviews', OrganizationReviewViewSet)
+# router.register(r'profile-reviews', ProfileReviewViewSet)
+
 urlpatterns = [
     path('', include(router.urls)),
 ]
