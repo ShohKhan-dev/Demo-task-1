@@ -35,21 +35,18 @@ class Category(MPTTModel):
     
 
     def save(self, *args, **kwargs):
-        siblings = Category.objects.filter(parent=self.parent).exclude(pk=self.pk).order_by('order_number')
 
         if self.order_number is None:
-            # Set order_number to the next available number if not provided
             self.order_number = siblings.count() + 1
         else:
-            # Adjust siblings' order_number if necessary
-            siblings_to_update = siblings.filter(order_number__gte=self.order_number)
-            for sibling in siblings_to_update:
-                sibling.order_number += 1
-                sibling.save()
+            existing_category = Category.objects.filter(parent=self.parent, order_number=self.order_number).exclude(pk=self.pk).first()
+            if existing_category:
+                existing_category.order_number, self.order_number = self.order_number, existing_category.order_number
+                existing_category.save()
+
 
         super().save(*args, **kwargs)
 
-        # Reorder siblings after saving to ensure no gaps
         siblings = Category.objects.filter(parent=self.parent).order_by('order_number')
         for i, sibling in enumerate(siblings, start=1):
             if sibling.order_number != i:
@@ -65,7 +62,6 @@ class Category(MPTTModel):
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
-        # Reorder the remaining siblings after deletion
         siblings = Category.objects.filter(parent=self.parent).order_by('order_number')
         for i, sibling in enumerate(siblings, start=1):
             sibling.order_number = i

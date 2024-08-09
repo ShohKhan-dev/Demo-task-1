@@ -7,7 +7,6 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name_uz', 'name_ru', 'name_en', 'image', 'order_number', 'parent', 'category_children']
-        read_only_fields = ['order_number']
 
     def get_category_children(self, obj):
         children= obj.category_children.all()
