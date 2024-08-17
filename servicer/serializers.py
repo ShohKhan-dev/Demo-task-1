@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from servicer.models import Category, Service, Profile, ProfileService, Organization, OrganizationService, PortfolioImage, OrganizationReview, ProfileReview, ReviewImage
+from servicer.models import Category, Service, Profile, ProfileService, Organization, OrganizationService, PortfolioImage #OrganizationReview, ProfileReview, ReviewImage
 
 class CategorySerializer(serializers.ModelSerializer):
     category_children = serializers.SerializerMethodField()
